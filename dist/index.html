@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Make sure Tailwind is loaded -->
+</head>
+
+<body class="bg-yellow-600">
+
+    <div class="bg-gray-50 w-80 h-auto mx-auto my-32 rounded-2xl shadow-lg">
+        <div class="py-4 px-7 bg text-yellow-600 text-center text-4xl flex gap-5 justify-center items-center">
+            <h1>My Todo List</h1>
+            <img src="./images/notes-record-stationery-svgrepo-com (1).svg" width="30" alt="Notes Icon">
+        </div>
+
+        <div class="flex items-center">
+            <input type="text" placeholder="Add todo" class="rounded px-2 py-1 bg-black text-white flex-1"
+                id="todoInput">
+            <button class="border bg-green-800 px-3 py-1 text-white rounded" onclick="addBtnFn()">Add</button>
+        </div>
+
+        <div id="todos" class="flex flex-col gap-2 px-4 pb-4">
+            <!-- Todo items will be appended here -->
+        </div>
+    </div>
+
+    <script>
+        const inputForm = document.getElementById("todoInput");
+        const todos = document.getElementById("todos");
+
+        function addBtnFn() {
+            const id = new Date().getTime(); // Unique id based on timestamp
+            const inputValue = inputForm.value.trim();
+
+            if (inputValue === "") {
+                alert("Please enter a todo item!");
+                return;
+            }
+
+            const todo = document.createElement("div");
+            todo.className = "flex items-center gap-2 bg-white p-2 rounded shadow";
+            todo.innerHTML = `
+        <input type="checkbox" class="select" onclick="check(${id})" id="${id}">
+        <span id="text-${id}" class="flex-1">${inputValue}</span>
+        <button onclick="deleteTodo(${id})" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+      `;
+
+            todos.appendChild(todo);
+            inputForm.value = ""; // Clear input after adding
+        }
+
+        function check(id) {
+            const textElement = document.getElementById(`text-${id}`);
+            textElement.classList.toggle("line-through");
+            textElement.classList.toggle("text-gray-500");
+        }
+
+        function deleteTodo(id) {
+            const checkbox = document.getElementById(id);
+            const todoItem = checkbox.parentElement;
+            todoItem.remove();
+        }
+    </script>
+
+</body>
+
+</html>
